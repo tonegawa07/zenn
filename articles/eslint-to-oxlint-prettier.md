@@ -156,3 +156,9 @@ devDependenciesは **7パッケージ → 3パッケージ** に削減された�
 
 - **ESLintのルールが全てサポートされているわけではない。** eslint-plugin-jsdocのように対応していないプラグインもある。カスタムルールを多用しているプロジェクトでは事前に互換性を確認しておきたい。
 - **エコシステムはまだ発展途上。** ただし主要なルールは内蔵されており、実用上困ることは少ない。
+
+## 参考
+
+- https://oxc.rs/
+- https://github.com/oxc-project/oxc
+- https://prettier.io/
