@@ -6,23 +6,23 @@ topics: [zennfes2025infra, auth0, githubactions, cicd, iac]
 published: true
 ---
 
-認証にAuth0を導入した際に、Web UIで手動設定していると以下のような課題がある。
+認証にAuth0を導入した際に、Web UIで手動設定していると以下のような課題があります。
 
 - **変更履歴が追えない**
 - **環境間の差異管理が困難**
 - **レビューができない**
 - **ロールバックが困難**
 
-Auth0もAWSやGCPのようにIaC（Infrastructure as Code）で管理できないのかと考えていたところ、Auth0 Deploy CLI が提供されていたので、Auth0設定のIaC化と GitHub Actions での自動反映を実装した。
+Auth0もAWSやGCPのようにIaC（Infrastructure as Code）で管理できないのかと考えていたところ、Auth0 Deploy CLI が提供されていたので、Auth0設定のIaC化と GitHub Actions での自動反映を実装しました。
 
 ## Auth0 Deploy CLI
 
-[Auth0 Deploy CLI](https://github.com/auth0/auth0-deploy-cli) は、Auth0が公式に提供しているCLIツールで、Auth0の設定をYAMLやJSON形式でエクスポート/インポートできる。
+[Auth0 Deploy CLI](https://github.com/auth0/auth0-deploy-cli) は、Auth0が公式に提供しているCLIツールで、Auth0の設定をYAMLやJSON形式でエクスポート/インポートできます。
 
 :::message
 **Machine to Machine Applicationの作成が必要**
 
-Auth0 Deploy CLIを使用するには、Auth0側でMachine to Machine Applicationの作成と、Auth0 Management APIへの適切な権限付与が必要。
+Auth0 Deploy CLIを使用するには、Auth0側でMachine to Machine Applicationの作成と、Auth0 Management APIへの適切な権限付与が必要です。
 :::
 
 ## ファイル構成

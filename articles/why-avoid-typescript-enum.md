@@ -7,7 +7,7 @@ published: true
 published_at: 2025-09-11 09:00
 ---
 
-レビューで「enumは避けてUnionにしたいです」などと言っているものの、そういえばなぜ避けたほうがいいのかちゃんと説明できないなと思ったので、改めて整理する。
+普段レビューで「enumは避けてUnionにしたいです」などと言っているのですが、そういえばなぜ避けたほうがいいのかちゃんと説明できないなと思ったので、改めて整理したいと思います。
 
 ## enumの例
 
@@ -22,7 +22,7 @@ enum Status {
 ## なぜenumを避けるべきなのか？
 ### Tree Shakingが効かず、バンドルサイズが肥大化する
 
-enumはJavaScriptにトランスパイルされる際、即時実行関数（IIFE）でラップされたオブジェクトを生成する。
+enumはJavaScriptにトランスパイルされる際、即時実行関数（IIFE）でラップされたオブジェクトを生成します。
 
 TypeScriptコード
 
@@ -49,13 +49,13 @@ var Color;
 console.log(Color.Red);
 ```
 
-上記のようにColor.Redしか使っていなくても、Colorオブジェクト全体がバンドルファイルに含まれる。
+上記のようにColor.Redしか使っていなくても、Colorオブジェクト全体がバンドルファイルに含まれます。
 
-その結果、不要なコードを削除する Tree Shaking の恩恵を受けられず、バンドルサイズが意図せず大きくなる原因になる。
+その結果、不要なコードを削除する Tree Shaking の恩恵を受けられず、バンドルサイズが意図せず大きくなる原因になります。
 
 ### 数値enumの型の安全性が低い
 
-数値enumはnumber型と互換性があり、意図しない値の代入が可能。
+数値enumはnumber型と互換性があり、意図しない値の代入が可能です。
 
 ```typescript
 enum Status {
@@ -73,11 +73,11 @@ taskStatus = 1;                 // これもOK
 taskStatus = 99;                // エラーにならない
 ```
 
-上記のようにStatus型に定義されていない数値を代入してもTypeScriptコンパイラはエラーを検知できない。
+上記のようにStatus型に定義されていない数値を代入してもTypeScriptコンパイラはエラーを検知できません。
 
 ### リバースマッピングによる混乱
 
-数値enumは、キーから値へのマッピング（Color.Red → 0）だけでなく、値からキーへのリバースマッピング（Color[0] → "Red"）も自動的に生成する。
+数値enumは、キーから値へのマッピング（Color.Red → 0）だけでなく、値からキーへのリバースマッピング（Color[0] → "Red"）も自動的に生成します。
 
 ```typescript
 enum Color {
@@ -90,7 +90,7 @@ console.log(Color[0]);       // 出力: "Red"
 console.log(Object.keys(Color)); // 出力: ["0", "1", "Red", "Green"]
 ```
 
-上記のようにObject.keys() などで enum を反復処理しようとすると、キーと値の両方が含まれる。
+上記のようにObject.keys() などで enum を反復処理しようとすると、キーと値の両方が含まれます。
 
 ## 代替手段
 ### 文字列リテラル型 (Union Types)
@@ -122,8 +122,8 @@ let taskStatus: Status = STATUS.IN_PROGRESS;
 
 ## TypeScriptの思想
 
-TypeScriptはあくまで "JavaScript + 静的型付け"
+TypeScriptはあくまで "JavaScript + 静的型付け" です。
 
-enum等のTypeScriptの独自機能は、上記のように元のコードからは想像しにくい複雑なJavaScriptコードを生成する場合がある。
+enum等のTypeScriptの独自機能は、上記のように元のコードからは想像しにくい複雑なJavaScriptコードを生成する場合があります。
 
-enumのようなランタイムに影響を与える独自機能は、アプリケーションの挙動やパフォーマンスに影響を与えるためなるべく避ける。
+enumのようなランタイムに影響を与える独自機能は、アプリケーションの挙動やパフォーマンスに影響を与えるためなるべく避けましょう。

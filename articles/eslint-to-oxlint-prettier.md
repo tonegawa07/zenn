@@ -8,7 +8,7 @@ published: true
 
 ## ESLint 8系の構成
 
-TypeScriptのバックエンドプロジェクトで、ESLint 8系を使っており、構成はこんな感じだった。
+TypeScriptのバックエンドプロジェクトで、ESLint 8系を使っており、構成はこんな感じでした。
 
 ```
 eslint
@@ -20,15 +20,15 @@ eslint-plugin-jsdoc
 eslint-import-resolver-typescript
 ```
 
-ESLintがコード品質チェックとフォーマットの両方を担っていた。
+また、ESLintがコード品質チェックとフォーマットの両方を担っていました。
 
 1. **コード品質チェック**: 未使用変数、import制約、TypeScript固有のルールなど
 2. **フォーマット**: `indent`、`quotes`、`max-len`、`import/order`（import文の並び順）など
 
 ## ESLint v9への移行がしんどい
 
-ESLint 9ではFlat Configへの移行が必須になった。
-調査してみると、以下のようにFlat Configへの移行に各プラグインが追従しきれておらず、この時点でESLint 9への移行は諦めることにした。
+ESLint 9ではFlat Configへの移行が必須になりました。
+調査してみると、以下のようにFlat Configへの移行に各プラグインが追従しきれておらず、この時点でESLint 9への移行は諦めることにしました。
 
 - `.eslintrc.js` → `eslint.config.mjs` への書き換えが必要
 - `eslint-config-google` がESLint 9に非対応で、そのまま使えない
@@ -37,28 +37,28 @@ ESLint 9ではFlat Configへの移行が必須になった。
 
 ## lintとformatを分離する
 
-ここで立ち止まって、そもそもの構成を見直すことにした。ESLintにフォーマットまで任せていたのがよくなかったので、フォーマットは **Prettier** に分離し、lintは **oxlint** に置き換えることにした。
+ここで立ち止まって、そもそもの構成を見直すことにしました。ESLintにフォーマットまで任せていたのがかなり微妙だったので、フォーマットは **Prettier** に分離し、lintは **oxlint** に置き換えることにしました。
 
 ## なぜoxlintか
 
 ### Rust製で圧倒的に速い
 
-oxlintはRust製のリンターで、ESLintと比較して50〜100倍高速とされている。
-lintの高速化はCIの高速化にもつながる。
+oxlintはRust製のリンターで、ESLintと比較して50〜100倍高速とされています。
+lintの高速化はCIの高速化にもつながります。
 
 ### プラグインが内蔵されている
 
-oxlintは `typescript`、`import`、`unicorn`、`jest` などの主要なプラグインを内蔵している。`@typescript-eslint` のバージョンを気にしたり、プラグイン同士の互換性を調べたりする必要がなく、設定ファイル1つで完結する。
+oxlintは `typescript`、`import`、`unicorn`、`jest` などの主要なプラグインを内蔵しています。`@typescript-eslint` のバージョンを気にしたり、プラグイン同士の互換性を調べたりする必要がなく、設定ファイル1つで完結します。
 
 ### oxfmtの存在
 
-oxlintを開発しているOxcプロジェクトでは、Rust製フォーマッターの **oxfmt** の開発も進んでいる。将来的にPrettierをoxfmtに置き換えれば、lint + formatの両方がRust製ツールで統一される。Prettierは現時点での最善の選択だが、エコシステム全体の方向性としてOxcに寄せておくのは悪くないと判断した。
+oxlintを開発しているOxcプロジェクトでは、Rust製フォーマッターの **oxfmt** の開発も進んでいます。将来的にPrettierをoxfmtに置き換えれば、lint + formatの両方がRust製ツールで統一されます。oxfmtはまだAlpha版なので、現時点でのファーストチョイスとしてはPrettierになりますが、エコシステム全体の方向性としてOxcに寄せておくのは悪くないと判断しました。
 
 ## 移行手順
 
 ### 1. Prettierの導入
 
-まずフォーマットをPrettierに移した。ESLintのフォーマット系ルール（`indent`、`quotes`、`max-len`、`import/order` など）を削除し、Prettierに一任する。
+まずフォーマットをPrettierに移しました。ESLintのフォーマット系ルール（`indent`、`quotes`、`max-len`、`import/order` など）を削除し、Prettierに一任します。
 
 ```bash
 npm install -D prettier
@@ -73,11 +73,11 @@ npm install -D prettier
 }
 ```
 
-Prettierの高速化のため `@prettier/plugin-oxc`（パーサーをRust製のOxcに置き換えるプラグイン）も導入した。これだけで **24秒 → 16秒** に改善した。
+Prettierの高速化のため `@prettier/plugin-oxc`（パーサーをRust製のOxcに置き換えるプラグイン）も導入しました。これだけで `format:check` の実行時間が1.5倍速くなりました。
 
 ### 2. ESLintをoxlintに置き換え
 
-ESLint関連のパッケージを全て削除し、oxlintをインストールした。
+ESLint関連のパッケージを全て削除し、oxlintをインストールしました。
 
 ```bash
 # ESLint関連を削除
@@ -98,13 +98,13 @@ npm install -D oxlint
 }
 ```
 
-ESLintで使っていたカスタムルールは、oxlintでもほぼそのまま `.oxlintrc.json` に移植できた。
+ESLintで使っていたカスタムルールは、oxlintでもほぼそのまま `.oxlintrc.json` に移植できました。
 
-有効化したプラグインは `eslint`、`typescript`、`unicorn`、`oxc`、`import`、`jest` の6つ。いずれもoxlintに内蔵されているため、追加のnpmパッケージは不要になる。
+有効化したプラグインは `eslint`、`typescript`、`unicorn`、`oxc`、`import`、`jest` の6つ。いずれもoxlintに内蔵されているため、追加のnpmパッケージは不要になります。
 
 ### 3. CIパイプラインの更新
 
-ESLint + reviewdogの構成から、oxlint + Prettierに変更した。
+ESLint + reviewdogの構成から、oxlint + Prettierに変更しました。
 
 ```yaml
 # Before
@@ -123,12 +123,12 @@ ESLint + reviewdogの構成から、oxlint + Prettierに変更した。
   run: npm run format:check
 ```
 
-reviewdogによるPRインラインコメント機能は失われたが、oxlintのエラー出力は十分に見やすく、CIログから問題箇所を特定するのに困ることはなかった。
-oxlintの恩恵によりCIのlintステップは1秒以下で終わるようになった。
+reviewdogによるPRインラインコメント機能は失われましたが、oxlintのエラー出力は十分に見やすく、CIログから問題箇所を特定するのに困ることはありませんでした。
+oxlintの恩恵によりCIのlintステップは1秒以下で終わるようになりました。
 
 ### 4. 不要ファイルの削除
 
-`.eslintrc.js` と、ESLintパーサー用の `tsconfig.eslint.json` を削除した。oxlintはtsconfigを参照しないため、パーサー用の設定ファイルが不要になる。
+`.eslintrc.js` と、ESLintパーサー用の `tsconfig.eslint.json` を削除しました。oxlintはtsconfigを参照しないため、パーサー用の設定ファイルが不要になります。
 
 ## 最終的な構成
 
@@ -137,7 +137,7 @@ oxlintの恩恵によりCIのlintステップは1秒以下で終わるように�
 | リンティング | oxlint（eslint, typescript, unicorn, oxc, import, jest プラグイン） |
 | フォーマット | Prettier + @prettier/plugin-oxc |
 
-devDependenciesは **7パッケージ → 3パッケージ** に削減された。
+devDependenciesは **7パッケージ → 3パッケージ** に削減されました。
 
 ```diff
 - "@typescript-eslint/eslint-plugin"
