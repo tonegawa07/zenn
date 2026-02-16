@@ -391,3 +391,8 @@ OpenAPI定義に存在しないパスやメソッドの組み合わせはコン�
 - openapi-typescriptで生成される `paths` 型から、Conditional Type + `infer` でパスパラメータやリクエストボディを抽出できる
 - それをExpressの `Request` に渡すUtility Typeを作ることで、OpenAPI定義と型定義の二重管理がなくなる
 - OpenAPI定義に存在しないパスやメソッドはコンパイル時に弾かれるので、定義と実装の乖離を防げる
+
+## 参考
+
+- https://github.com/openapi-ts/openapi-typescript
+- https://speakerdeck.com/tonegawa07/typespecdeshi-xian-suruxin-kunaiopenapisukimaqu-dong-kai-fa
