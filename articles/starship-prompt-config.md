@@ -24,6 +24,10 @@ https://starship.rs/guide/#%F0%9F%9A%80-installation
 
 Starshipはデフォルトで大量のモジュール（Node.jsのバージョン、Python環境、Dockerコンテキストなど）をプロンプトに表示してくれますが、自分には情報量が多すぎました。普段の開発で目にする情報は「どのディレクトリにいるか」「どのブランチにいるか」「何が変更されているか」くらいなので、それ以外は削ぎ落としています。
 
+最終的にこのようなプロンプトになります。
+
+![Starshipプロンプトの完成形](/images/starship-prompt-config-example.png)
+
 ## starship.toml
 
 ```toml
@@ -83,6 +87,15 @@ $time\
 | `$character` | 入力プロンプト（`❯`） |
 
 `\n` で改行を入れて2行構成にしています。1行目に情報、2行目にコマンド入力。ディレクトリパスが深くなってもコマンド入力が圧迫されないのが気に入っています。
+
+`$directory` は `[directory]` セクションを書いていないのでデフォルト設定で動いています。デフォルトでは `truncate_to_repo = true` が有効になっており、Gitリポジトリ内ではリポジトリルート（`.git` がある場所）からの相対パスに自動で切り詰められます。
+
+```
+# ~/projects/my-app がリポジトリルートの場合
+~/projects/my-app/src/components  →  my-app/src/components と表示される
+```
+
+リポジトリ外では `~` からの通常パスがそのまま表示されます。
 
 ## `git_branch`：ブランチ表示
 
