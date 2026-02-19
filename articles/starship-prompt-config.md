@@ -2,7 +2,7 @@
 title: "Starshipでターミナルプロンプトをカスタマイズする"
 emoji: "🚀"
 type: "tech"
-topics: [starship, terminal, shell, dotfiles]
+topics: [starship, terminal]
 published: true
 ---
 
